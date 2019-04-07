@@ -1,0 +1,46 @@
+{
+	"postSchema":{
+		"properties": {
+	        "name": { "type": "string", "maxLength": 10, "minLength": 5 },
+	        "age": { "type": "integer" },
+	        "contact": { "type": "string" }
+	    },
+	    "required": ["name"]
+	},
+
+	"putSchema":{		
+		"properties":{
+			"criteria":{
+				"type":"object", 
+			    "properties":{
+					"_id":{"type":"string"}
+				},
+				"required":["_id"]
+			},
+			"payLoad":{
+				"type":"object",
+				"properties":{
+					"name":{"type":"string"},
+					"age":{"type":"integer"},
+					"contact":{"type":"string"}
+				}
+			}
+		},
+		"required":["criteria","payLoad"]
+	},
+	"deleteSchema":{		
+		"properties":{
+			"criteria":{"type":"string"},
+			"payLoad":{
+				"type":"object",
+				"properties":{
+					"name":{"type":"string"},
+					"age":{"type":"integer"},
+					"contact":{"type":"string"}
+				},
+				"required":["age"]
+			}
+		},
+		"required":["criteria"]
+	}
+}

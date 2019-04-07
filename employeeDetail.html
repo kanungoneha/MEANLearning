@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script>
+        async function getEmp() {
+            try {
+                let emp = await fetch('http://localhost:8000/employeeLoki/db')
+                if (!emp.ok) {
+                    throw new Error(emp.status)
+                } else {
+                    emp = await emp.json()
+                    const starterHTML =
+                        `<table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Id</th>
+                                            <th> Edit</th>
+                                            <th> Delete</th>
+                                        </tr>
+                                        </thead>
+                                    `
+                    let html = emp.map(emp =>
+                        `<tr><td>${emp.name}</td><td>${emp._id}</td>
+                        <td><button type="button" id="editbtn" class="btn btn-primary" onclick="editEmp('${emp._id}')">Edit</button></td>
+                        <td><button type="button" id="deletebtn" class="btn btn-primary" onclick="deleteEmp('${emp._id}')">Delete</button></td>
+                        </tr>`
+                    )
+                    html = html.reduce((acc, curr) => acc + curr)
+                    document.getElementById("divZone").innerHTML = starterHTML + html + `</table>`
+                }
+            } catch (err) {
+                console.error(`${err.message}-${err.slack}`)
+
+            }
+        }
+        async function editEmp(mongoid) {
+            try {
+                let emp = await fetch(`http://localhost:8000/employeeLoki/db/${mongoid}`)
+                if (!emp.ok) {
+                    throw new Error('Errro in fetch employe &{emp.status}')
+                } else {
+                    emp = await emp.json()
+                    const editForm =
+                        `<table>
+        <tr><td>Name</td>
+            <td><input type="text" value="${emp.name}"/></td>
+            <td><input type="button" value="submit" onclick="updateEmployee('${emp._id}')"/></td>
+            </tr></table>`
+                    document.getElementById("divZone").innerHTML = editForm + `</table>`
+                }
+
+
+            } catch (err) {
+                console.error(`${err.message}-${err.slack}`)
+
+            }
+        }
+
+        async  function updateEmployee(empid){
+            try{}
+            catch(err){
+                console.error(`${err.message}-${err.slack}`)
+
+            }
+
+
+        }
+    </script>
+
+</head>
+
+<body onload="getEmp()">
+
+    <div class="container" id="divZone">
+        <h2>Table</h2>
+    </div>
+
+</body>
+
+</html>
